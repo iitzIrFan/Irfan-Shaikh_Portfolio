@@ -1414,7 +1414,10 @@ textarea.form-input::-webkit-resizer { display: none; }
     border-radius: 20px;
   }
 
-  .testimonials-avatar-box img { width: 80px; }
+  .testimonials-avatar-box img { 
+    width: 80px;
+    border-radius: 20%;
+  }
 
   .testimonials-item-title {
     margin-bottom: 10px;
@@ -1423,8 +1426,8 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .testimonials-text {
     line-clamp: 2;
-    -webkit-line-clamp: 2;
-  }
+    /* -webkit-line-clamp: 2;*/    /* Note :- This may be issue so check here ! */
+   }
 
   /* testimonials modal */
 
