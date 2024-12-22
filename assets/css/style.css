@@ -1,3 +1,15 @@
+/*-----------------------------------*\
+  #style.css
+\*-----------------------------------*/
+
+
+/**
+ * copyright 2022 @codewithsadee
+ */
+
+
+
+
 
 /*-----------------------------------*\
   #CUSTOM PROPERTY
@@ -13,7 +25,7 @@
 
   --bg-gradient-onyx: linear-gradient(
     to bottom right, 
-    hsl(0, 0%, 0%) 3%, 
+    hsl(240, 1%, 25%) 3%, 
     hsl(0, 0%, 19%) 97%
   );
   --bg-gradient-jet: linear-gradient(
@@ -44,7 +56,7 @@
 
   /* solid */
 
-  --jet: hsl(63, 100%, 50%);
+  --jet: hsl(0, 0%, 22%);
   --onyx: hsl(240, 1%, 17%);
   --eerie-black-1: hsl(240, 2%, 13%);
   --eerie-black-2: hsl(240, 2%, 12%);
@@ -84,11 +96,11 @@
    * shadow
    */
   
-  --shadow-1: -4px 8px 24px hsla(0, 0%, 70%, 0.25);
-  --shadow-2: 0 16px 30px hsla(0, 0%, 70%, 0.25);
-  --shadow-3: 0 16px 40px hsla(0, 0%, 70%, 0.25);
-  --shadow-4: 0 25px 50px hsla(0, 0%, 70%, 0.15);
-  --shadow-5: 0 24px 80px hsla(0, 0%, 70%, 0.25);
+  --shadow-1: -4px 8px 24px hsla(0, 0%, 0%, 0.25);
+  --shadow-2: 0 16px 30px hsla(0, 0%, 0%, 0.25);
+  --shadow-3: 0 16px 40px hsla(0, 0%, 0%, 0.25);
+  --shadow-4: 0 25px 50px hsla(0, 0%, 0%, 0.15);
+  --shadow-5: 0 24px 80px hsla(0, 0%, 0%, 0.25);
 
   /**
    * transition
@@ -98,6 +110,7 @@
   --transition-2: 0.5s ease-in-out;
 
 }
+
 
 
 
@@ -303,12 +316,12 @@ main {
 
 .sidebar {
   margin-bottom: 15px;
-  max-height: 140px;
+  max-height: 112px;
   overflow: hidden;
   transition: var(--transition-2);
 }
 
-.sidebar.active { max-height: 470px; }
+.sidebar.active { max-height: 405px; }
 
 .sidebar-info {
   position: relative;
@@ -318,9 +331,8 @@ main {
   gap: 15px;
 }
 
-.avatar-box {
-  background: var(--bg-gradient-onyx);
-  border-radius: 20px;
+.avatar-box img {
+  border-radius: 50%;
 }
 
 .info-content .name {
@@ -1414,10 +1426,7 @@ textarea.form-input::-webkit-resizer { display: none; }
     border-radius: 20px;
   }
 
-  .testimonials-avatar-box img { 
-    width: 80px;
-    border-radius: 20%;
-  }
+  .testimonials-avatar-box img { width: 80px; }
 
   .testimonials-item-title {
     margin-bottom: 10px;
@@ -1426,8 +1435,8 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .testimonials-text {
     line-clamp: 2;
-    /* -webkit-line-clamp: 2;*/    /* Note :- This may be issue so check here ! */
-   }
+    -webkit-line-clamp: 2;
+  }
 
   /* testimonials modal */
 
