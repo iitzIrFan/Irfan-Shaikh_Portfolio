@@ -157,3 +157,48 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+
+
+// Function to fetch and display pinned repos
+async function fetchPinnedRepos() {
+  try {
+    const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
+    const repos = await response.json();
+    
+    const projectList = document.querySelector('.project-list');
+    
+    // Add a heading for GitHub projects
+    const heading = document.createElement('h4');
+    heading.className = 'h5 article-title';
+    heading.textContent = 'GitHub Projects !';
+    projectList.insertAdjacentElement('beforebegin', heading);
+
+    repos.forEach(repo => {
+      const projectItem = `
+        <li class="project-item active" data-filter-item data-category="github">
+          <a href="${repo.link}" target="_blank">
+            <figure class="project-img">
+              <div class="project-item-icon-box">
+                <ion-icon name="eye-outline"></ion-icon>
+              </div>
+              <img src="./assets/images/github-repo.png" alt="${repo.repo}" loading="lazy">
+            </figure>
+
+            <h3 class="project-title">${repo.repo}</h3>
+            <p class="project-category">GitHub Repository</p>
+            <p class="project-text">${repo.description || 'No description available'}</p>
+          </a>
+        </li>
+      `;
+      
+      projectList.insertAdjacentHTML('beforeend', projectItem);
+    });
+    
+  } catch (error) {
+    console.error('Error fetching pinned repositories:', error);
+  }
+}
+
+// Call the function when the page loads
+window.addEventListener('load', fetchPinnedRepos);
