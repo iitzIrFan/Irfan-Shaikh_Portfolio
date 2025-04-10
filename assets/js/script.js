@@ -161,6 +161,7 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
 
 // Function to fetch and display pinned repos
+window.addEventListener('load', fetchPinnedRepos);
 async function fetchPinnedRepos() {
   try {
     const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
