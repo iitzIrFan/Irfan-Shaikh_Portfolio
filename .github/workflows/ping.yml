@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Curl the Render API with Timestamp
-        id: api_request  # Add an ID to capture data
+        id: api_request
         run: |
           # Capture the current time
           current_time=$(date +"%Y-%m-%d %H:%M:%S")
@@ -20,11 +20,18 @@ jobs:
           # Perform the API request
           response=$(curl -s https://octo-pinned-api.onrender.com/api/pinned)
 
-          # Print the current time and the API response
+          # Send the response to Slack
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "The workflow ran at: '"$current_time"'\nAPI Response: '"$response"'
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+
+          # Print to GitHub Actions log for confirmation
           echo "Timestamp: $current_time"
           echo "API Response: $response"
 
-          # Use the environment file to pass data between steps
+          # Store the response in an environment variable for further steps
           echo "API_RESPONSE=$response" >> $GITHUB_ENV
           echo "TIMESTAMP=$current_time" >> $GITHUB_ENV
 
