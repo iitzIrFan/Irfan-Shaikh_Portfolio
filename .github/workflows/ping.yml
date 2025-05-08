@@ -21,10 +21,8 @@ jobs:
           response=$(curl -s https://octo-pinned-api.onrender.com/api/pinned)
 
           # Send the response to Slack
-          curl -X POST -H 'Content-type: application/json' \
-            --data '{
-              "text": "The workflow ran at: '"$current_time"'\nAPI Response: '"$response"'
-            }' \
+          curl -X POST -H "Content-type: application/json" \
+            --data "{\"text\":\"The workflow ran at: $current_time\\nAPI Response: $response\"}" \
             ${{ secrets.SLACK_WEBHOOK_URL }}
 
           # Print to GitHub Actions log for confirmation
