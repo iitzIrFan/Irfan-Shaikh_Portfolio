@@ -1,0 +1,13 @@
+name: Ping Render API Every 1 Minute
+
+on:
+  schedule:
+    - cron: '* * * * *'   # Every 1 minute (UTC)
+  workflow_dispatch:       # Manual trigger option
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Curl the Render API
+        run: curl -s https://octo-pinned-api.onrender.com/api/pinned-t
