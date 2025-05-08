@@ -1,9 +1,12 @@
-name: Ping Render API Every 1 Minute
+name: Ping Render API
 
 on:
   schedule:
     - cron: '* * * * *'   # Every 1 minute (UTC)
-  workflow_dispatch:       # Manual trigger option
+  push:                    # Trigger on push to any branch
+    branches:
+      - main               # Trigger on push to the 'main' branch (you can change this to match your branch name)
+  workflow_dispatch:        # Manual trigger option
 
 jobs:
   ping:
