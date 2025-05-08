@@ -5,7 +5,7 @@ on:
     - cron: '*/3 * * * *'  # Every 3 minutes (UTC)
   push:
     branches:
-      - main  # Trigger the workflow on push to the 'main' branch
+      - main
 
 jobs:
   ping:
@@ -20,9 +20,12 @@ jobs:
           # Perform the API request
           response=$(curl -s https://octo-pinned-api.onrender.com/api/pinned)
 
-          # Send the response to Slack
+          # Format the API response (you can limit the number of repos or simplify it for Slack)
+          formatted_response=$(echo $response | jq -r '.[] | "Repo: \(.name)\nURL: \(.url)\nStars: \(.stargazerCount)\n"')
+
+          # Send the formatted response to Slack
           curl -X POST -H "Content-type: application/json" \
-            --data "{\"text\":\"The workflow ran at: $current_time\\nAPI Response: $response\"}" \
+            --data "{\"text\":\"The workflow ran at: $current_time\\nAPI Response: \\n$formatted_response\"}" \
             ${{ secrets.SLACK_WEBHOOK_URL }}
 
           # Print to GitHub Actions log for confirmation
