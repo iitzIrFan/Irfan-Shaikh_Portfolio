@@ -14,8 +14,8 @@ jobs:
       - name: Curl the Render API with Timestamp
         id: api_request
         run: |
-          # Capture the current time
-          current_time=$(date +"%Y-%m-%d %H:%M:%S")
+          # Get IST time
+          current_time=$(TZ="Asia/Kolkata" date +"%Y-%m-%d %H:%M:%S")
 
           # Perform the API request
           response=$(curl -s https://octo-pinned-api.onrender.com/api/pinned)
