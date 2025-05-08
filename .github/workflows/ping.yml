@@ -2,7 +2,7 @@ name: Ping Render API
 
 on:
   schedule:
-    - cron: '*/3 * * * *'  # Every 3 minutes (UTC)
+    - cron: '*/5 * * * *'  # Every 5 minutes (UTC)
   push:
     branches:
       - main
