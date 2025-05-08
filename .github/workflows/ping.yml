@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Curl the Render API
-        run: curl -s https://octo-pinned-api.onrender.com/api/pinned-t
+        run: curl -s https://octo-pinned-api.onrender.com/api/pinned
