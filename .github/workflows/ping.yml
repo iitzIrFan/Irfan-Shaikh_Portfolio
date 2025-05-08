@@ -2,15 +2,33 @@ name: Ping Render API
 
 on:
   schedule:
-    - cron: '* * * * *'   # Every 1 minute (UTC)
-  push:                    # Trigger on push to any branch
+    - cron: '*/3 * * * *'  # Every 3 minutes (UTC)
+  push:
     branches:
-      - main               # Trigger on push to the 'main' branch (you can change this to match your branch name)
-  workflow_dispatch:        # Manual trigger option
+      - main
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Curl the Render API
-        run: curl -s https://octo-pinned-api.onrender.com/api/pinned
+      - name: Curl the Render API with Timestamp
+        id: api_request  # Add an ID to capture data
+        run: |
+          # Capture the current time
+          current_time=$(date +"%Y-%m-%d %H:%M:%S")
+          
+          # Perform the API request
+          response=$(curl -s https://octo-pinned-api.onrender.com/api/pinned)
+
+          # Print the current time and the API response
+          echo "Timestamp: $current_time"
+          echo "API Response: $response"
+          
+          # Optionally, set output for further steps
+          echo "::set-output name=api_response::$response"
+          echo "::set-output name=timestamp::$current_time"
+
+      - name: Show the API response with Timestamp
+        run: |
+          echo "The API responded at ${{ steps.api_request.outputs.timestamp }} with: ${{ steps.api_request.outputs.api_response }}"
