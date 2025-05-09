@@ -1905,3 +1905,48 @@ textarea.form-input::-webkit-resizer { display: none; }
   margin-top: 10px;
   margin-left: 10px;
 }
+
+/* API */
+.project-preview-btn {
+  display: inline-block;
+  background-color: #007bff; /* Primary blue color */
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  padding: 1px 3px;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s ease;
+  /* font-weight: 300; */
+}
+
+.project-preview-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.project-preview-btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Focused effect */
+}
+
+.project-preview-btn:active {
+  background-color: #004085; /* Darkest blue on click */
+  transform: translateY(0); /* Reset on click */
+}
+
+.live-preview-btn {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background: linear-gradient(135deg, #4CAF50, #2E7D32);
+  color: white;
+  /* font-weight: 500; */
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.live-preview-btn:hover {
+  background: linear-gradient(135deg, #66BB6A, #388E3C);
+  transform: scale(1.05);
+}
+

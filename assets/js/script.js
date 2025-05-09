@@ -182,11 +182,13 @@ function displayRepos(repos) {
   projectList.insertAdjacentElement('beforebegin', heading);
 
   repos.forEach(repo => {
-    const { name, description, url, stargazerCount, forkCount, languages } = repo;
+    const { name, description, url, stargazerCount, forkCount, languages, homepageUrl } = repo;
     const language = languages?.nodes?.[0]?.name || "Unknown";
 
-    // Dynamically generate repo thumbnail using OpenGraph
-    const repoThumbnail = `https://og-image.vercel.app/${encodeURIComponent(name)}.png`;
+    // Use OpenGraph image from live link if available, otherwise use repo-based thumbnail
+    const repoThumbnail = homepageUrl
+      ? `https://api.microlink.io/?url=${encodeURIComponent(homepageUrl)}&screenshot=true&meta=false&embed=screenshot.url`
+      : `https://og-image.vercel.app/${encodeURIComponent(name)}.png`;
 
     const projectItem = `
       <li class="project-item active" data-filter-item data-category="github">
@@ -203,6 +205,7 @@ function displayRepos(repos) {
           <p class="project-category">
             🌟 ${stargazerCount} &nbsp;&nbsp;🍴 ${forkCount} &nbsp;&nbsp;💻 ${language}
           </p>
+          ${homepageUrl ? `<p><a href="${homepageUrl}" target="_blank" class="live-preview-btn">Live Project Link</a></p>` : ''}
         </a>
       </li>
     `;
