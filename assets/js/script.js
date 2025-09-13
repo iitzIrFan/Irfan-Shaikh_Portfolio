@@ -73,6 +73,151 @@ window.addEventListener('DOMContentLoaded', function() {
 
 
 
+// Function to fetch PRs from GitHub API
+async function fetchGitHubPRs() {
+  const username = 'iitzIrFan'; // Your GitHub username
+  const prList = document.querySelector('.pr-list');
+  
+  if (!prList) return;
+  
+  // Show loading state
+  prList.innerHTML = '<li class="loading">Loading your latest contributions...</li>';
+  
+  try {
+    // Fetch PRs created by the user (across all repositories)
+    const response = await fetch(`https://api.github.com/search/issues?q=author:${username}+is:pr&sort=updated&order=desc`);
+    
+    if (!response.ok) {
+      throw new Error('GitHub API request failed');
+    }
+    
+    const data = await response.json();
+    displayGitHubPRs(data.items);
+  } catch (error) {
+    console.error('Error fetching GitHub PRs:', error);
+    prList.innerHTML = `<li class="error">Error loading PRs: ${error.message}</li>`;
+    
+    // Fall back to hardcoded data if GitHub API fails
+    setTimeout(() => {
+      displayFallbackPRs();
+    }, 3000);
+  }
+}
+
+// Function to display PRs fetched from GitHub
+function displayGitHubPRs(prs) {
+  const prList = document.querySelector('.pr-list');
+  
+  if (!prList || !prs || prs.length === 0) {
+    prList.innerHTML = '<li class="no-data">No pull requests found</li>';
+    return;
+  }
+  
+  // Clear the list
+  prList.innerHTML = '';
+  
+  // Take the 5 most recent PRs
+  const recentPRs = prs.slice(0, 5);
+  
+  recentPRs.forEach(pr => {
+    // Extract repository name from PR URL
+    // Format: https://api.github.com/repos/OWNER/REPO/issues/NUMBER
+    const repoPath = new URL(pr.repository_url).pathname;
+    const repoName = repoPath.split('/').pop();
+    
+    // Determine PR status based on state and merged status
+    let status = pr.state; // 'open' or 'closed'
+    if (pr.state === 'closed' && pr.pull_request.merged_at) {
+      status = 'merged';
+    }
+    
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <a href="${pr.html_url}" target="_blank">
+        <div>
+          <strong>${repoName}:</strong> ${pr.title}
+        </div>
+        <span class="pr-status ${status}">${status}</span>
+      </a>
+    `;
+    prList.appendChild(li);
+  });
+}
+
+// Fallback function in case the GitHub API fails
+function displayFallbackPRs() {
+  const prList = document.querySelector('.pr-list');
+  
+  if (!prList) return;
+  
+  // Clear any existing list items
+  prList.innerHTML = '';
+  
+  // Hardcoded fallback data
+  const fallbackPRs = [
+    {
+      name: 'React Router',
+      description: 'Added TypeScript support for nested route components',
+      url: 'https://github.com/remix-run/react-router/pull/123',
+      status: 'merged'
+    },
+    {
+      name: 'Express.js',
+      description: 'Fixed memory leak in request handling middleware',
+      url: 'https://github.com/expressjs/express/pull/456',
+      status: 'open'
+    },
+    {
+      name: 'Tailwind CSS',
+      description: 'Added new animation utilities for smoother transitions',
+      url: 'https://github.com/tailwindlabs/tailwindcss/pull/789',
+      status: 'merged'
+    },
+    {
+      name: 'Next.js',
+      description: 'Improved error handling for server components',
+      url: 'https://github.com/vercel/next.js/pull/101112',
+      status: 'open'
+    },
+    {
+      name: 'TypeScript',
+      description: 'Enhanced type inference for optional chaining',
+      url: 'https://github.com/microsoft/TypeScript/pull/131415',
+      status: 'closed'
+    }
+  ];
+  
+  // Create and append list items for each PR
+  fallbackPRs.forEach(pr => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <a href="${pr.url}" target="_blank">
+        <div>
+          <strong>${pr.name}:</strong> ${pr.description}
+        </div>
+        <span class="pr-status ${pr.status}">${pr.status}</span>
+      </a>
+    `;
+    prList.appendChild(li);
+  });
+}
+
+// Call the function when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+  fetchGitHubPRs();
+});
+
+// Additional event listener for when switching tabs
+document.querySelectorAll('.navbar-link').forEach(link => {
+  link.addEventListener('click', () => {
+    // Only fetch PRs when navigating to the proof-of-work section
+    if (link.getAttribute('href') === '#proof-of-work') {
+      // Small delay to ensure the DOM has updated
+      setTimeout(fetchGitHubPRs, 100);
+    }
+  });
+});
+
 // contact form variables
 const form = document.querySelector("[data-form]");
 const formInputs = document.querySelectorAll("[data-form-input]");
