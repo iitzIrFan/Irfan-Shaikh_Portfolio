@@ -217,14 +217,15 @@ function displayRepos(repos) {
 const sections = document.querySelectorAll('article');
 const navLinks = document.querySelectorAll('.navbar-link');
 const aboutSection = document.querySelector('.about');
-const aboutLink = document.querySelector('.navbar-link[href="#"]');
+const aboutLink = document.querySelector('.navbar-link[href="#about"]');
 
-function showSection(path) {
-  // Extract route name without leading slash if present
-  const routeName = path.replace(/^\//, '');
+// Function to show the appropriate section based on the hash
+function showSection(hash) {
+  // Remove the # if it exists
+  const sectionId = hash.startsWith('#') ? hash.substring(1) : hash;
   
-  // Handle the About/home route
-  if (!routeName || routeName === '' || routeName === 'about') {
+  // Handle the About section specifically
+  if (!sectionId || sectionId === 'about') {
     // Show only the About section
     sections.forEach(section => {
       section.classList.toggle('active', section.classList.contains('about'));
@@ -238,39 +239,28 @@ function showSection(path) {
     return;
   }
   
-  // For other sections, show only the selected section
+  // For other sections, hide all and show only the selected section
   sections.forEach(section => {
-    section.classList.toggle('active', section.id === routeName);
+    section.classList.toggle('active', section.id === sectionId);
   });
 
   navLinks.forEach(link => {
-    const linkRoute = link.getAttribute('data-route');
-    link.classList.toggle('active', linkRoute === routeName);
+    const linkHash = link.getAttribute('href');
+    link.classList.toggle('active', linkHash === `#${sectionId}`);
   });
-}
-
-// Function to handle navigation
-function navigateTo(path) {
-  history.pushState(null, '', path);
-  showSection(path);
 }
 
 // Initial page load
 window.addEventListener('DOMContentLoaded', () => {
-  const path = window.location.pathname;
-  showSection(path);
-  
-  // Add click event listeners to all nav links
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const route = link.getAttribute('data-route') || '';
-      navigateTo(route ? `/${route}` : '/');
-    });
-  });
+  if (window.location.hash) {
+    showSection(window.location.hash);
+  } else {
+    // Default to About section
+    showSection('about');
+  }
 });
 
-// Handle browser back/forward navigation
-window.addEventListener('popstate', () => {
-  showSection(window.location.pathname);
+// Handle hash changes (navigation)
+window.addEventListener('hashchange', () => {
+  showSection(window.location.hash);
 });
