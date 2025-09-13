@@ -173,19 +173,23 @@
         <ul class="navbar-list">
 
           <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
+            <a href="#about" class="navbar-link active" data-nav-link>About</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resume</button>
+            <a href="#resume" class="navbar-link" data-nav-link>Resume</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
+            <a href="#portfolio" class="navbar-link" data-nav-link>Portfolio</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contact</button>
+            <a href="#contact" class="navbar-link" data-nav-link>Contact</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="#proof-of-work" class="navbar-link" data-nav-link>Proof of Work</a>
           </li>
 
         </ul>
@@ -196,7 +200,7 @@
         - #ABOUT
       -->
 
-      <article class="about  active" data-page="about">
+      <article class="about active" data-page="about">
 
         <header>
           <h2 class="h2 article-title">About me</h2>
@@ -504,7 +508,7 @@
         - #RESUME
       -->
 
-      <article class="resume" data-page="resume">
+      <article class="resume" id="resume" data-page="resume">
 
         <header>
           <h2 class="h2 article-title">Resume</h2>
@@ -751,7 +755,7 @@
         - #PORTFOLIO
       -->
 
-      <article class="portfolio" data-page="portfolio">
+      <article class="portfolio" id="portfolio" data-page="portfolio">
 
         <header>
           <h2 class="h2 article-title">Projects</h2>
@@ -759,49 +763,7 @@
 
         <section class="projects">
 
-          <!-- <ul class="filter-list">
-
-            <li class="filter-item">
-              <button class="active" data-filter-btn>All</button>
-            </li>
-
-          </ul> -->
-
-          <div class="filter-select-box">
-
-            <button class="filter-select" data-select>
-
-              <div class="select-value" data-selecct-value>Select
-                category</div>
-
-              <div class="select-icon">
-                <ion-icon name="chevron-down"></ion-icon>
-              </div>
-
-            </button>
-
-            <ul class="select-list">
-
-              <li class="select-item">
-                <button data-select-item>All</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Websites</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Dyanamic Web App</button>
-              </li>
-
-              <li class="select-item">
-                <button data-select-item>Console Application</button>
-              </li>
-            </ul>
-
-          </div>
-
-          <br>
+          <!-- Filter section removed -->
           
           <!-- Class for fetching the API's response ! -->
           <ul class="project-list">
@@ -1004,7 +966,7 @@
         - #CONTACT
       -->
 
-      <article class="contact" data-page="contact">
+      <article class="contact" id="contact" data-page="contact">
 
         <header>
           <h2 class="h2 article-title">Contact</h2>
@@ -1042,6 +1004,24 @@
 
         </section>
 
+      </article>
+
+      <!--
+        - #PROOF OF WORK
+      -->
+
+      <article class="proof-of-work" id="proof-of-work" data-page="proof-of-work">
+        <header>
+          <h2 class="h2 article-title">Proof of Work</h2>
+        </header>
+        <section class="proof-of-work-content">
+          <p>Here are my open-source contributions:</p>
+          <ul>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+          </ul>
+        </section>
       </article>
 
     </div>
