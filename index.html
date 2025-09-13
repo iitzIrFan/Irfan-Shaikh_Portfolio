@@ -173,19 +173,23 @@
         <ul class="navbar-list">
 
           <li class="navbar-item">
-            <button class="navbar-link  active" data-nav-link>About</button>
+            <a href="/" class="navbar-link active" data-nav-link data-route="">About</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Resume</button>
+            <a href="/resume" class="navbar-link" data-nav-link data-route="resume">Resume</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Portfolio</button>
+            <a href="/portfolio" class="navbar-link" data-nav-link data-route="portfolio">Portfolio</a>
           </li>
 
           <li class="navbar-item">
-            <button class="navbar-link" data-nav-link>Contact</button>
+            <a href="/contact" class="navbar-link" data-nav-link data-route="contact">Contact</a>
+          </li>
+
+          <li class="navbar-item">
+            <a href="/proof-of-work" class="navbar-link" data-nav-link data-route="proof-of-work">Proof of Work</a>
           </li>
 
         </ul>
@@ -196,7 +200,7 @@
         - #ABOUT
       -->
 
-      <article class="about  active" data-page="about">
+      <article class="about active" data-page="about">
 
         <header>
           <h2 class="h2 article-title">About me</h2>
@@ -504,7 +508,7 @@
         - #RESUME
       -->
 
-      <article class="resume" data-page="resume">
+      <article class="resume" id="resume" data-page="resume">
 
         <header>
           <h2 class="h2 article-title">Resume</h2>
@@ -751,7 +755,7 @@
         - #PORTFOLIO
       -->
 
-      <article class="portfolio" data-page="portfolio">
+      <article class="portfolio" id="portfolio" data-page="portfolio">
 
         <header>
           <h2 class="h2 article-title">Projects</h2>
@@ -1004,7 +1008,7 @@
         - #CONTACT
       -->
 
-      <article class="contact" data-page="contact">
+      <article class="contact" id="contact" data-page="contact">
 
         <header>
           <h2 class="h2 article-title">Contact</h2>
@@ -1042,6 +1046,24 @@
 
         </section>
 
+      </article>
+
+      <!--
+        - #PROOF OF WORK
+      -->
+
+      <article class="proof-of-work" id="proof-of-work" data-page="proof-of-work">
+        <header>
+          <h2 class="h2 article-title">Proof of Work</h2>
+        </header>
+        <section class="proof-of-work-content">
+          <p>Here are my open-source contributions:</p>
+          <ul>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+            <li><a href="https://github.com" target="_blank">TestPR's</a></li>
+          </ul>
+        </section>
       </article>
 
     </div>

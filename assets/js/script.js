@@ -213,3 +213,64 @@ function displayRepos(repos) {
     projectList.insertAdjacentHTML('beforeend', projectItem);
   });
 }
+
+const sections = document.querySelectorAll('article');
+const navLinks = document.querySelectorAll('.navbar-link');
+const aboutSection = document.querySelector('.about');
+const aboutLink = document.querySelector('.navbar-link[href="#"]');
+
+function showSection(path) {
+  // Extract route name without leading slash if present
+  const routeName = path.replace(/^\//, '');
+  
+  // Handle the About/home route
+  if (!routeName || routeName === '' || routeName === 'about') {
+    // Show only the About section
+    sections.forEach(section => {
+      section.classList.toggle('active', section.classList.contains('about'));
+    });
+    
+    // Make only About link active
+    navLinks.forEach(link => {
+      link.classList.toggle('active', link === aboutLink);
+    });
+    
+    return;
+  }
+  
+  // For other sections, show only the selected section
+  sections.forEach(section => {
+    section.classList.toggle('active', section.id === routeName);
+  });
+
+  navLinks.forEach(link => {
+    const linkRoute = link.getAttribute('data-route');
+    link.classList.toggle('active', linkRoute === routeName);
+  });
+}
+
+// Function to handle navigation
+function navigateTo(path) {
+  history.pushState(null, '', path);
+  showSection(path);
+}
+
+// Initial page load
+window.addEventListener('DOMContentLoaded', () => {
+  const path = window.location.pathname;
+  showSection(path);
+  
+  // Add click event listeners to all nav links
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const route = link.getAttribute('data-route') || '';
+      navigateTo(route ? `/${route}` : '/');
+    });
+  });
+});
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', () => {
+  showSection(window.location.pathname);
+});
