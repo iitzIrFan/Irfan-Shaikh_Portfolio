@@ -362,17 +362,48 @@ main {
   font-size: var(--fs-3);
   font-weight: var(--fw-500);
   letter-spacing: -0.25px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.info-content .title-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .info-content .title {
   color: var(--white-1);
   background: var(--onyx);
   font-size: var(--fs-8);
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
   width: max-content;
-  padding: 3px 12px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--jet);
+  transition: var(--transition-1);
+  box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.info-content .title:hover {
+  background: var(--jet);
+  border-color: var(--orange-yellow-crayola);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.3);
+}
+
+.info-content .title ion-icon {
+  font-size: 14px;
+  color: var(--orange-yellow-crayola);
+  --ionicon-stroke-width: 45px;
+}
+
+.info-content .title span {
+  line-height: 1;
+  font-size: var(--fs-8);
 }
 
 .info_more-btn {
@@ -1522,7 +1553,18 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .info-content .name { margin-bottom: 15px; }
 
-  .info-content .title { padding: 5px 18px; }
+  .info-content .title-wrapper {
+    gap: 12px;
+  }
+
+  .info-content .title { 
+    padding: 8px 18px;
+    font-size: var(--fs-7);
+  }
+
+  .info-content .title ion-icon {
+    font-size: 18px;
+  }
 
   .info_more-btn {
     top: -30px;
@@ -1743,6 +1785,19 @@ textarea.form-input::-webkit-resizer { display: none; }
   /**
    * SIDEBAR
    */
+
+  .sidebar-info { gap: 30px; }
+
+  .info-content .title-wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .info-content .title {
+    padding: 9px 20px;
+  }
 
   .contacts-list {
     grid-template-columns: 1fr 1fr;
@@ -2084,7 +2139,17 @@ textarea.form-input::-webkit-resizer { display: none; }
     text-align: center;
   }
 
-  .info-content .title { margin: auto; }
+  .info-content .title-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .info-content .title { 
+    margin: 0;
+    padding: 10px 22px;
+  }
 
   .info_more-btn { display: none; }
 
