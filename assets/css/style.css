@@ -220,6 +220,28 @@ article.active {
   100% { opacity: 1; }
 }
 
+@keyframes fadeOut {
+  0% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.9);
+  }
+}
+
+@keyframes slideInUp {
+  0% { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .h2,
 .h3,
 .h4,
@@ -340,17 +362,48 @@ main {
   font-size: var(--fs-3);
   font-weight: var(--fw-500);
   letter-spacing: -0.25px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.info-content .title-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .info-content .title {
   color: var(--white-1);
   background: var(--onyx);
   font-size: var(--fs-8);
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
   width: max-content;
-  padding: 3px 12px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--jet);
+  transition: var(--transition-1);
+  box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.info-content .title:hover {
+  background: var(--jet);
+  border-color: var(--orange-yellow-crayola);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.3);
+}
+
+.info-content .title ion-icon {
+  font-size: 14px;
+  color: var(--orange-yellow-crayola);
+  --ionicon-stroke-width: 45px;
+}
+
+.info-content .title span {
+  line-height: 1;
+  font-size: var(--fs-8);
 }
 
 .info_more-btn {
@@ -1042,6 +1095,106 @@ main {
   opacity: 0.8;
 }
 
+/* Status Message (Error/Maintenance) */
+
+.status-message {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-4);
+  text-align: center;
+  animation: scaleUp 0.25s ease forwards;
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.status-message::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--eerie-black-1);
+  z-index: -1;
+}
+
+.status-icon {
+  font-size: 60px;
+  color: var(--orange-yellow-crayola);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.status-title {
+  color: var(--white-2);
+  font-size: var(--fs-4);
+  font-weight: var(--fw-500);
+  margin-bottom: 15px;
+}
+
+.status-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.status-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.retry-btn, .github-link-btn {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  text-transform: capitalize;
+  padding: 13px 30px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.retry-btn::before, .github-link-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+  transition: var(--transition-1);
+}
+
+.retry-btn:hover::before, .github-link-btn:hover::before {
+  background: var(--bg-gradient-yellow-1);
+}
+
+.retry-btn:hover, .github-link-btn:hover {
+  color: var(--white-1);
+}
+
+.retry-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.retry-btn ion-icon, .github-link-btn ion-icon {
+  font-size: 18px;
+}
+
 
 /*-----------------------------------*\
   #BLOG
@@ -1263,6 +1416,28 @@ textarea.form-input::-webkit-resizer { display: none; }
   .project-img,
   .blog-banner-box { height: auto; }
 
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 35px 25px;
+  }
+
+  .status-icon {
+    font-size: 50px;
+  }
+
+  .status-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .retry-btn, .github-link-btn {
+    min-width: 160px;
+  }
+
 }
 
 
@@ -1317,6 +1492,28 @@ textarea.form-input::-webkit-resizer { display: none; }
     height: 5px;
   }
 
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 45px 35px;
+  }
+
+  .status-icon {
+    font-size: 65px;
+  }
+
+  .status-text {
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 14px 32px;
+  }
+
   .icon-box {
     width: 48px;
     height: 48px;
@@ -1356,7 +1553,18 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .info-content .name { margin-bottom: 15px; }
 
-  .info-content .title { padding: 5px 18px; }
+  .info-content .title-wrapper {
+    gap: 12px;
+  }
+
+  .info-content .title { 
+    padding: 8px 18px;
+    font-size: var(--fs-7);
+  }
+
+  .info-content .title ion-icon {
+    font-size: 18px;
+  }
 
   .info_more-btn {
     top: -30px;
@@ -1578,6 +1786,19 @@ textarea.form-input::-webkit-resizer { display: none; }
    * SIDEBAR
    */
 
+  .sidebar-info { gap: 30px; }
+
+  .info-content .title-wrapper {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .info-content .title {
+    padding: 9px 20px;
+  }
+
   .contacts-list {
     grid-template-columns: 1fr 1fr;
     gap: 30px 15px;
@@ -1602,6 +1823,37 @@ textarea.form-input::-webkit-resizer { display: none; }
   .testimonials-modal {
     gap: 35px;
     max-width: 680px;
+  }
+
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 50px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .status-icon {
+    font-size: 70px;
+  }
+
+  .status-title {
+    font-size: var(--fs-3);
+  }
+
+  .status-text {
+    font-size: var(--fs-6);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 14px 35px;
+    font-size: var(--fs-6);
   }
 
   .modal-avatar-box img { width: 80px; }
@@ -1703,6 +1955,38 @@ textarea.form-input::-webkit-resizer { display: none; }
     position: relative;
     width: max-content;
     margin: auto;
+  }
+
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 60px 50px;
+    max-width: 700px;
+  }
+
+  .status-icon {
+    font-size: 80px;
+    margin-bottom: 25px;
+  }
+
+  .status-title {
+    font-size: var(--fs-2);
+    margin-bottom: 20px;
+  }
+
+  .status-text {
+    max-width: 550px;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 15px 40px;
+    min-width: 180px;
+  }
+
+  .retry-btn ion-icon, .github-link-btn ion-icon {
+    font-size: 20px;
   }
 
 
@@ -1855,7 +2139,17 @@ textarea.form-input::-webkit-resizer { display: none; }
     text-align: center;
   }
 
-  .info-content .title { margin: auto; }
+  .info-content .title-wrapper {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .info-content .title { 
+    margin: 0;
+    padding: 10px 22px;
+  }
 
   .info_more-btn { display: none; }
 
