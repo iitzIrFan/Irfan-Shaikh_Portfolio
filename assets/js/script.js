@@ -117,59 +117,142 @@ for (let i = 0; i < navigationLinks.length; i++) {
 }
 
 
+// Function to display error/maintenance message
+function displayErrorMessage() {
+  const projectList = document.querySelector('.project-list');
+  
+  // Check if projects exist and animate them out
+  const existingProjects = document.querySelectorAll('.project-item');
+  const existingHeading = document.querySelector('.h5.article-title');
+  
+  if (existingProjects.length > 0 || existingHeading) {
+    // Fade out existing projects
+    existingProjects.forEach((project, index) => {
+      project.style.animation = `fadeOut 0.3s ease forwards ${index * 0.05}s`;
+    });
+    if (existingHeading) {
+      existingHeading.style.animation = 'fadeOut 0.3s ease forwards';
+    }
+    
+    // Wait for fade out to complete, then show error
+    setTimeout(() => {
+      if (existingHeading) existingHeading.remove();
+      projectList.innerHTML = '';
+      showErrorCard();
+    }, 300 + (existingProjects.length * 50));
+  } else {
+    projectList.innerHTML = '';
+    showErrorCard();
+  }
+  
+  function showErrorCard() {
+    const errorCard = `
+      <div class="status-message" style="opacity: 0; animation: slideInUp 0.5s ease forwards;">
+        <ion-icon name="cloud-offline-outline" class="status-icon"></ion-icon>
+        <h3 class="status-title">Unable to Load Projects</h3>
+        <p class="status-text">
+          Our backend API is currently experiencing connectivity issues. This may be temporary due to server maintenance or network limitations. We appreciate your patience.
+        </p>
+        <div class="status-actions">
+          <button class="retry-btn" onclick="retryFetchRepos()">
+            <ion-icon name="refresh-outline"></ion-icon>
+            <span>Try Again</span>
+          </button>
+          <a href="https://github.com/iitzIrFan" target="_blank" class="github-link-btn">
+            <ion-icon name="logo-github"></ion-icon>
+            <span>Visit GitHub</span>
+          </a>
+        </div>
+      </div>
+    `;
+
+    projectList.insertAdjacentHTML('beforeend', errorCard);
+  }
+}
+
+// Retry function for error message button
+function retryFetchRepos() {
+  const retryBtn = document.querySelector('.retry-btn');
+  if (retryBtn) {
+    retryBtn.disabled = true;
+    retryBtn.innerHTML = '<ion-icon name="hourglass-outline"></ion-icon><span>Loading...</span>';
+  }
+  fetchPinnedRepos();
+}
+
 // Function to fetch and display pinned repositories
 window.addEventListener('load', fetchPinnedRepos);
 
 async function fetchPinnedRepos() {
   try {
-    const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
+    const response = await fetch('http://127.0.0.1:8000/api/pinned');
+    if (!response.ok) {
+      throw new Error(`API responded with status: ${response.status}`);
+    }
     const repos = await response.json();
     displayRepos(repos);
   } catch (error) {
     console.error('Error fetching pinned repositories:', error);
+    displayErrorMessage();
   }
 }
 
 function displayRepos(repos) {
   const projectList = document.querySelector('.project-list');
-  projectList.innerHTML = ''; // Clear previous list
+  
+  // Check if error message exists and animate it out
+  const errorMessage = document.querySelector('.status-message');
+  if (errorMessage) {
+    errorMessage.style.animation = 'fadeOut 0.4s ease forwards';
+    setTimeout(() => {
+      projectList.innerHTML = '';
+      populateProjects();
+    }, 400);
+  } else {
+    projectList.innerHTML = '';
+    populateProjects();
+  }
 
-  const heading = document.createElement('h4');
-  heading.className = 'h5 article-title';
-  heading.textContent = 'GitHub Projects';
-  projectList.insertAdjacentElement('beforebegin', heading);
+  function populateProjects() {
+    const heading = document.createElement('h4');
+    heading.className = 'h5 article-title';
+    heading.textContent = 'GitHub Projects';
+    heading.style.opacity = '0';
+    heading.style.animation = 'slideInUp 0.5s ease forwards';
+    projectList.insertAdjacentElement('beforebegin', heading);
 
-  repos.forEach(repo => {
-    const { name, description, url, stargazerCount, forkCount, languages, homepageUrl } = repo;
-    const language = languages?.nodes?.[0]?.name || "Unknown";
+    repos.forEach((repo, index) => {
+      const { name, description, url, stargazerCount, forkCount, languages, homepageUrl } = repo;
+      const language = languages?.nodes?.[0]?.name || "Unknown";
 
-    // Use OpenGraph image from live link if available, otherwise use repo-based thumbnail
-    const repoThumbnail = homepageUrl
-      ? `https://api.microlink.io/?url=${encodeURIComponent(homepageUrl)}&screenshot=true&meta=false&embed=screenshot.url`
-      : `https://og-image.vercel.app/${encodeURIComponent(name)}.png`;
+      // Use OpenGraph image from live link if available, otherwise use repo-based thumbnail
+      const repoThumbnail = homepageUrl
+        ? `https://api.microlink.io/?url=${encodeURIComponent(homepageUrl)}&screenshot=true&meta=false&embed=screenshot.url`
+        : `https://og-image.vercel.app/${encodeURIComponent(name)}.png`;
 
-    const projectItem = `
-      <li class="project-item active" data-filter-item data-category="github">
-        <a href="${url}" target="_blank">
-          <figure class="project-img">
-            <div class="project-item-icon-box">
-              <ion-icon name="eye-outline"></ion-icon>
-            </div>
-            <img src="${repoThumbnail}" alt="${name}" loading="lazy">
-          </figure>
+      const projectItem = `
+        <li class="project-item active" data-filter-item data-category="github" style="opacity: 0; animation: slideInUp 0.5s ease forwards ${index * 0.1}s;">
+          <a href="${url}" target="_blank">
+            <figure class="project-img">
+              <div class="project-item-icon-box">
+                <ion-icon name="eye-outline"></ion-icon>
+              </div>
+              <img src="${repoThumbnail}" alt="${name}" loading="lazy">
+            </figure>
 
-          <h3 class="project-title">${name}</h3>
-          <p class="project-text">${description || 'No description available'}</p>
-          <p class="project-category">
-            🌟 ${stargazerCount} &nbsp;&nbsp;🍴 ${forkCount} &nbsp;&nbsp;💻 ${language}
-          </p>
-          ${homepageUrl ? `<p><a href="${homepageUrl}" target="_blank" class="live-preview-btn">Live Project Link</a></p>` : ''}
-        </a>
-      </li>
-    `;
+            <h3 class="project-title">${name}</h3>
+            <p class="project-text">${description || 'No description available'}</p>
+            <p class="project-category">
+              🌟 ${stargazerCount} &nbsp;&nbsp;🍴 ${forkCount} &nbsp;&nbsp;💻 ${language}
+            </p>
+            ${homepageUrl ? `<p><a href="${homepageUrl}" target="_blank" class="live-preview-btn">Live Project Link</a></p>` : ''}
+          </a>
+        </li>
+      `;
 
-    projectList.insertAdjacentHTML('beforeend', projectItem);
-  });
+      projectList.insertAdjacentHTML('beforeend', projectItem);
+    });
+  }
 }
 
 const sections = document.querySelectorAll('article');

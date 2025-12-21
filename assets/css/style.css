@@ -220,6 +220,28 @@ article.active {
   100% { opacity: 1; }
 }
 
+@keyframes fadeOut {
+  0% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+  100% { 
+    opacity: 0; 
+    transform: scale(0.9);
+  }
+}
+
+@keyframes slideInUp {
+  0% { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .h2,
 .h3,
 .h4,
@@ -1042,6 +1064,106 @@ main {
   opacity: 0.8;
 }
 
+/* Status Message (Error/Maintenance) */
+
+.status-message {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-4);
+  text-align: center;
+  animation: scaleUp 0.25s ease forwards;
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.status-message::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  background: var(--eerie-black-1);
+  z-index: -1;
+}
+
+.status-icon {
+  font-size: 60px;
+  color: var(--orange-yellow-crayola);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.status-title {
+  color: var(--white-2);
+  font-size: var(--fs-4);
+  font-weight: var(--fw-500);
+  margin-bottom: 15px;
+}
+
+.status-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.status-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.retry-btn, .github-link-btn {
+  position: relative;
+  background: var(--border-gradient-onyx);
+  color: var(--orange-yellow-crayola);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  text-transform: capitalize;
+  padding: 13px 30px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.retry-btn::before, .github-link-btn::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg-gradient-jet);
+  border-radius: inherit;
+  z-index: -1;
+  transition: var(--transition-1);
+}
+
+.retry-btn:hover::before, .github-link-btn:hover::before {
+  background: var(--bg-gradient-yellow-1);
+}
+
+.retry-btn:hover, .github-link-btn:hover {
+  color: var(--white-1);
+}
+
+.retry-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.retry-btn ion-icon, .github-link-btn ion-icon {
+  font-size: 18px;
+}
+
 
 /*-----------------------------------*\
   #BLOG
@@ -1263,6 +1385,28 @@ textarea.form-input::-webkit-resizer { display: none; }
   .project-img,
   .blog-banner-box { height: auto; }
 
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 35px 25px;
+  }
+
+  .status-icon {
+    font-size: 50px;
+  }
+
+  .status-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .retry-btn, .github-link-btn {
+    min-width: 160px;
+  }
+
 }
 
 
@@ -1315,6 +1459,28 @@ textarea.form-input::-webkit-resizer { display: none; }
   .article-title::after {
     width: 40px;
     height: 5px;
+  }
+
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 45px 35px;
+  }
+
+  .status-icon {
+    font-size: 65px;
+  }
+
+  .status-text {
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 14px 32px;
   }
 
   .icon-box {
@@ -1604,6 +1770,37 @@ textarea.form-input::-webkit-resizer { display: none; }
     max-width: 680px;
   }
 
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 50px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .status-icon {
+    font-size: 70px;
+  }
+
+  .status-title {
+    font-size: var(--fs-3);
+  }
+
+  .status-text {
+    font-size: var(--fs-6);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 14px 35px;
+    font-size: var(--fs-6);
+  }
+
   .modal-avatar-box img { width: 80px; }
 
 
@@ -1703,6 +1900,38 @@ textarea.form-input::-webkit-resizer { display: none; }
     position: relative;
     width: max-content;
     margin: auto;
+  }
+
+  /**
+   * STATUS MESSAGE
+   */
+
+  .status-message {
+    padding: 60px 50px;
+    max-width: 700px;
+  }
+
+  .status-icon {
+    font-size: 80px;
+    margin-bottom: 25px;
+  }
+
+  .status-title {
+    font-size: var(--fs-2);
+    margin-bottom: 20px;
+  }
+
+  .status-text {
+    max-width: 550px;
+  }
+
+  .retry-btn, .github-link-btn {
+    padding: 15px 40px;
+    min-width: 180px;
+  }
+
+  .retry-btn ion-icon, .github-link-btn ion-icon {
+    font-size: 20px;
   }
 
 
