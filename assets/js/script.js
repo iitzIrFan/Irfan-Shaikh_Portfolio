@@ -121,6 +121,18 @@ for (let i = 0; i < navigationLinks.length; i++) {
 function displayErrorMessage() {
   const projectList = document.querySelector('.project-list');
   
+  // Check if error message already exists
+  const existingError = document.querySelector('.status-message');
+  if (existingError) {
+    // Reset retry button state if it exists
+    const retryBtn = existingError.querySelector('.retry-btn');
+    if (retryBtn) {
+      retryBtn.disabled = false;
+      retryBtn.innerHTML = '<ion-icon name="refresh-outline"></ion-icon><span>Try Again</span>';
+    }
+    return; // Don't recreate the error message
+  }
+  
   // Check if projects exist and animate them out
   const existingProjects = document.querySelectorAll('.project-item');
   const existingHeading = document.querySelector('.h5.article-title');
@@ -154,7 +166,7 @@ function displayErrorMessage() {
           Our backend API is currently experiencing connectivity issues. This may be temporary due to server maintenance or network limitations. We appreciate your patience.
         </p>
         <div class="status-actions">
-          <button class="retry-btn" onclick="retryFetchRepos()">
+          <button class="retry-btn">
             <ion-icon name="refresh-outline"></ion-icon>
             <span>Try Again</span>
           </button>
@@ -167,11 +179,25 @@ function displayErrorMessage() {
     `;
 
     projectList.insertAdjacentHTML('beforeend', errorCard);
+    
+    // Attach event listener after button is created
+    const retryBtn = projectList.querySelector('.retry-btn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', handleRetryClick);
+    }
   }
 }
 
-// Retry function for error message button
-function retryFetchRepos() {
+// Loading state flag to prevent race conditions
+let isFetchingRepos = false;
+
+// Retry handler - not exposed globally
+function handleRetryClick() {
+  // Prevent multiple simultaneous requests
+  if (isFetchingRepos) {
+    return;
+  }
+  
   const retryBtn = document.querySelector('.retry-btn');
   if (retryBtn) {
     retryBtn.disabled = true;
@@ -184,8 +210,15 @@ function retryFetchRepos() {
 window.addEventListener('load', fetchPinnedRepos);
 
 async function fetchPinnedRepos() {
+  // Guard against concurrent requests
+  if (isFetchingRepos) {
+    return;
+  }
+  
+  isFetchingRepos = true;
+  
   try {
-    const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
+    const response = await fetch('http://127.0.0.1:8000/api/pinned');
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
     }
@@ -194,6 +227,9 @@ async function fetchPinnedRepos() {
   } catch (error) {
     console.error('Error fetching pinned repositories:', error);
     displayErrorMessage();
+  } finally {
+    // Always reset the loading state
+    isFetchingRepos = false;
   }
 }
 
