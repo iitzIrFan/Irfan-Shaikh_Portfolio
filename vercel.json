@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/docs",
+      "destination": "https://used-minnow.super.site/"
+    }
+  ]
+}
