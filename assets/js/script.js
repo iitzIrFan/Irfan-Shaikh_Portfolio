@@ -341,3 +341,272 @@ window.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('hashchange', () => {
   showSection(window.location.hash);
 });
+
+
+
+/*-----------------------------------*\
+  #PROOF OF WORK - GitHub OSS Contributions
+\*-----------------------------------*/
+
+// GitHub API Configuration
+const GITHUB_CONFIG = {
+  username: 'iitzIrFan',
+  token: 'YOUR_GITHUB_TOKEN_HERE', // Replace with your GitHub Personal Access Token
+  orgs: ['kestra-io', 'QwikDev', 'recodehive']
+};
+
+// Cache for storing fetched data
+const orgDataCache = {};
+
+// Proof of Work functionality
+const initProofOfWork = () => {
+  const orgDropdowns = document.querySelectorAll('.org-dropdown');
+  
+  orgDropdowns.forEach(dropdown => {
+    const header = dropdown.querySelector('.org-dropdown-header');
+    const org = dropdown.getAttribute('data-org');
+    
+    header.addEventListener('click', async () => {
+      const isActive = dropdown.classList.contains('active');
+      
+      // Close all other dropdowns
+      orgDropdowns.forEach(d => {
+        if (d !== dropdown) {
+          d.classList.remove('active');
+        }
+      });
+      
+      // Toggle current dropdown
+      dropdown.classList.toggle('active');
+      
+      // Fetch data only if opening and not cached
+      if (!isActive && !orgDataCache[org]) {
+        await fetchAndDisplayOrgIssues(dropdown, org);
+      }
+    });
+  });
+};
+
+// Fetch issues from GitHub API
+const fetchOrgIssues = async (org, username, token) => {
+  const headers = {
+    'Accept': 'application/vnd.github.v3+json'
+  };
+  
+  // Add authorization header if token is provided
+  if (token && token !== 'YOUR_GITHUB_TOKEN_HERE') {
+    headers['Authorization'] = `token ${token}`;
+  }
+  
+  try {
+    // Fetch issues where user commented
+    const commentedResponse = await fetch(
+      `https://api.github.com/search/issues?q=org:${org}+commenter:${username}&sort=updated&per_page=30`,
+      { headers }
+    );
+    
+    // Fetch issues assigned to user
+    const assignedResponse = await fetch(
+      `https://api.github.com/search/issues?q=org:${org}+assignee:${username}&sort=updated&per_page=30`,
+      { headers }
+    );
+    
+    // Fetch issues created by user that are now closed
+    const closedResponse = await fetch(
+      `https://api.github.com/search/issues?q=org:${org}+author:${username}+is:closed&sort=updated&per_page=30`,
+      { headers }
+    );
+    
+    // Check for rate limiting
+    const rateLimitRemaining = commentedResponse.headers.get('X-RateLimit-Remaining');
+    if (rateLimitRemaining !== null) {
+      console.log(`GitHub API Rate Limit Remaining: ${rateLimitRemaining}`);
+    }
+    
+    if (!commentedResponse.ok || !assignedResponse.ok || !closedResponse.ok) {
+      throw new Error('Failed to fetch issues from GitHub API');
+    }
+    
+    const commentedData = await commentedResponse.json();
+    const assignedData = await assignedResponse.json();
+    const closedData = await closedResponse.json();
+    
+    return {
+      commented: commentedData.items || [],
+      assigned: assignedData.items || [],
+      closed: closedData.items || [],
+      rateLimitRemaining
+    };
+  } catch (error) {
+    console.error('Error fetching GitHub issues:', error);
+    throw error;
+  }
+};
+
+// Fetch and display organization issues
+const fetchAndDisplayOrgIssues = async (dropdown, org) => {
+  const container = dropdown.querySelector('.org-issues-container');
+  const spinner = dropdown.querySelector('.loading-spinner');
+  
+  // Show loading spinner
+  spinner.style.display = 'flex';
+  container.innerHTML = '';
+  
+  try {
+    const data = await fetchOrgIssues(org, GITHUB_CONFIG.username, GITHUB_CONFIG.token);
+    
+    // Cache the data
+    orgDataCache[org] = data;
+    
+    // Hide spinner
+    spinner.style.display = 'none';
+    
+    // Display the issues
+    displayOrgIssues(container, data.commented, data.assigned, data.closed);
+    
+  } catch (error) {
+    spinner.style.display = 'none';
+    container.innerHTML = `
+      <div class="empty-state">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <p>Failed to load contributions. Please check your GitHub token and try again.</p>
+      </div>
+    `;
+  }
+};
+
+// Display organization issues
+const displayOrgIssues = (container, commentedIssues, assignedIssues, closedIssues) => {
+  let html = '<div class="issues-grid">';
+  
+  // Commented Issues Section
+  html += `
+    <div class="issue-section">
+      <h4 class="issue-section-title">
+        <ion-icon name="chatbox-outline"></ion-icon>
+        <span>Commented On</span>
+        <span class="issue-count">(${commentedIssues.length})</span>
+      </h4>
+  `;
+  
+  if (commentedIssues.length > 0) {
+    html += `
+      <div class="issue-list">
+        ${commentedIssues.map(issue => createIssueHTML(issue)).join('')}
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="empty-state">
+        <ion-icon name="document-outline"></ion-icon>
+        <p>No commented issues</p>
+      </div>
+    `;
+  }
+  
+  html += `</div>`;
+  
+  // Assigned Issues Section
+  html += `
+    <div class="issue-section">
+      <h4 class="issue-section-title">
+        <ion-icon name="person-outline"></ion-icon>
+        <span>Assigned to Me</span>
+        <span class="issue-count">(${assignedIssues.length})</span>
+      </h4>
+  `;
+  
+  if (assignedIssues.length > 0) {
+    html += `
+      <div class="issue-list">
+        ${assignedIssues.map(issue => createIssueHTML(issue)).join('')}
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="empty-state">
+        <ion-icon name="document-outline"></ion-icon>
+        <p>No assigned issues</p>
+      </div>
+    `;
+  }
+  
+  html += `</div>`;
+  
+  // Closed Issues Section
+  html += `
+    <div class="issue-section">
+      <h4 class="issue-section-title">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span>Closed by Me</span>
+        <span class="issue-count">(${closedIssues.length})</span>
+      </h4>
+  `;
+  
+  if (closedIssues.length > 0) {
+    html += `
+      <div class="issue-list">
+        ${closedIssues.map(issue => createIssueHTML(issue)).join('')}
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="empty-state">
+        <ion-icon name="document-outline"></ion-icon>
+        <p>No closed issues</p>
+      </div>
+    `;
+  }
+  
+  html += `</div></div>`;
+  
+  container.innerHTML = html;
+};
+
+// Create HTML for a single issue
+const createIssueHTML = (issue) => {
+  const repoName = issue.repository_url.split('/').slice(-2).join('/');
+  const createdDate = new Date(issue.created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+  
+  const labelsHTML = issue.labels && issue.labels.length > 0
+    ? `<div class="issue-labels">
+        ${issue.labels.slice(0, 3).map(label => 
+          `<span class="issue-label">${label.name}</span>`
+        ).join('')}
+        ${issue.labels.length > 3 ? `<span class="issue-label">+${issue.labels.length - 3} more</span>` : ''}
+      </div>`
+    : '';
+  
+  return `
+    <div class="issue-item">
+      <div class="issue-header">
+        <a href="${issue.html_url}" target="_blank" rel="noopener" class="issue-title-link">
+          ${issue.title}
+        </a>
+        <span class="issue-state ${issue.state}">${issue.state}</span>
+      </div>
+      <div class="issue-meta">
+        <span class="issue-repo">
+          <ion-icon name="git-branch-outline"></ion-icon>
+          ${repoName}
+        </span>
+        <span class="issue-date">
+          <ion-icon name="calendar-outline"></ion-icon>
+          ${createdDate}
+        </span>
+      </div>
+      ${labelsHTML}
+    </div>
+  `;
+};
+
+// Initialize Proof of Work when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initProofOfWork);
+} else {
+  initProofOfWork();
+}

@@ -2244,3 +2244,368 @@ textarea.form-input::-webkit-resizer { display: none; }
   transform: scale(1.05);
 }
 
+
+/*-----------------------------------*\
+  #PROOF OF WORK
+\*-----------------------------------*/
+
+.pow-intro-text {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-300);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.org-dropdowns {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.org-dropdown {
+  background: var(--border-gradient-onyx);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-2);
+  transition: var(--transition-1);
+}
+
+.org-dropdown:hover {
+  box-shadow: var(--shadow-3);
+}
+
+.org-dropdown-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: var(--bg-gradient-jet);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-1);
+}
+
+.org-dropdown-header:hover {
+  background: var(--bg-gradient-onyx);
+}
+
+.org-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.org-info ion-icon {
+  font-size: 24px;
+  color: var(--orange-yellow-crayola);
+}
+
+.org-name {
+  color: var(--white-2);
+  font-size: var(--fs-4);
+  font-weight: var(--fw-500);
+  margin: 0;
+}
+
+.dropdown-icon {
+  font-size: 20px;
+  color: var(--light-gray);
+  transition: transform var(--transition-1);
+}
+
+.org-dropdown.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+.org-dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background: var(--eerie-black-2);
+}
+
+.org-dropdown.active .org-dropdown-content {
+  max-height: 2000px;
+  transition: max-height 0.5s ease-in;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 15px;
+}
+
+.loading-spinner ion-icon {
+  font-size: 48px;
+  color: var(--orange-yellow-crayola);
+  animation: spin 1s linear infinite;
+}
+
+.loading-spinner p {
+  color: var(--light-gray-70);
+  font-size: var(--fs-6);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.org-issues-container {
+  padding: 0 20px 20px;
+}
+
+.issues-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.issue-section {
+  background: var(--border-gradient-onyx);
+  padding: 15px;
+  border-radius: 10px;
+  min-height: 150px;
+}
+
+.issue-section-title {
+  color: var(--white-2);
+  font-size: var(--fs-5);
+  font-weight: var(--fw-500);
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--jet);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.issue-section-title ion-icon {
+  color: var(--orange-yellow-crayola);
+  font-size: 20px;
+}
+
+.issue-count {
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+  font-weight: var(--fw-300);
+  margin-left: auto;
+}
+
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.issue-item {
+  background: var(--border-gradient-onyx);
+  padding: 16px;
+  border-radius: 10px;
+  transition: var(--transition-1);
+  border-left: 3px solid transparent;
+}
+
+.issue-item:hover {
+  background: var(--bg-gradient-onyx);
+  transform: translateX(5px);
+  border-left-color: var(--orange-yellow-crayola);
+}
+
+.issue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.issue-title-link {
+  color: var(--white-2);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-400);
+  line-height: 1.4;
+  text-decoration: none;
+  transition: var(--transition-1);
+  flex: 1;
+}
+
+.issue-title-link:hover {
+  color: var(--orange-yellow-crayola);
+}
+
+.issue-state {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: var(--fs-8);
+  font-weight: var(--fw-600);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.issue-state.open {
+  background: hsla(142, 71%, 45%, 0.15);
+  color: hsl(142, 71%, 65%);
+  border: 1px solid hsla(142, 71%, 45%, 0.3);
+}
+
+.issue-state.closed {
+  background: hsla(348, 83%, 47%, 0.15);
+  color: hsl(348, 83%, 67%);
+  border: 1px solid hsla(348, 83%, 47%, 0.3);
+}
+
+.issue-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.issue-repo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+}
+
+.issue-repo ion-icon {
+  font-size: 14px;
+  color: var(--orange-yellow-crayola);
+}
+
+.issue-date {
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.issue-date ion-icon {
+  font-size: 14px;
+}
+
+.issue-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.issue-label {
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: var(--fs-8);
+  font-weight: var(--fw-500);
+  background: var(--jet);
+  color: var(--light-gray);
+  border: 1px solid var(--onyx);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 15px;
+  color: var(--light-gray-70);
+}
+
+.empty-state ion-icon {
+  font-size: 36px;
+  color: var(--jet);
+  margin-bottom: 10px;
+}
+
+.empty-state p {
+  font-size: var(--fs-7);
+  line-height: 1.4;
+}
+
+.error-message {
+  text-align: center;
+  padding: 30px 20px;
+  background: hsla(0, 100%, 50%, 0.1);
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+.error-message ion-icon {
+  font-size: 48px;
+  color: hsl(0, 100%, 60%);
+  margin-bottom: 15px;
+}
+
+.error-message p {
+  color: var(--light-gray);
+  font-size: var(--fs-6);
+}
+
+.rate-limit-info {
+  text-align: center;
+  padding: 15px;
+  background: var(--border-gradient-onyx);
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.rate-limit-info p {
+  color: var(--light-gray-70);
+  font-size: var(--fs-7);
+}
+
+/* Responsive adjustments */
+@media (min-width: 580px) {
+  .issue-header {
+    align-items: center;
+  }
+  
+  .issue-meta {
+    gap: 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pow-intro-text {
+    font-size: var(--fs-5);
+  }
+  
+  .org-name {
+    font-size: var(--fs-3);
+  }
+  
+  .issue-section-title {
+    font-size: var(--fs-6);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .issue-section-title span {
+    display: block;
+  }
+  
+  .issue-count {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .issues-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .issue-section-title {
+    font-size: var(--fs-5);
+  }
+  
+  .org-dropdown.active .org-dropdown-content {
+    max-height: 3000px;
+  }
+}
