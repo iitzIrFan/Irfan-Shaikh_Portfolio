@@ -1058,30 +1058,77 @@
         <header>
           <h2 class="h2 article-title">Proof of Work</h2>
         </header>
-        <section class="proof-of-work-content" style="text-align: center; padding: 40px 20px;">
-          <div style="margin-bottom: 30px;">
-            <ion-icon name="construct-outline" style="font-size: 64px; color: var(--orange-yellow-crayola);"></ion-icon>
-          </div>
-          <h3 class="h3" style="margin-bottom: 15px;">🚧 Page Under Development 🚧</h3>
-          <p style="margin-bottom: 20px; color: var(--light-gray-70);">
-            We're building something awesome! A comprehensive showcase of open-source contributions is coming soon.
+
+        <section class="proof-of-work-content">
+          <p class="pow-intro-text">
+            My open-source contributions across various organizations. Click on an organization to see issues I've commented on and issues assigned to me.
           </p>
-          <div style="background: var(--border-gradient-onyx); padding: 20px; border-radius: 12px; margin-top: 30px;">
-            <h4 style="color: var(--light-gray); margin-bottom: 15px;">Want to collaborate?</h4>
-            <p style="color: var(--light-gray-70); margin-bottom: 20px;">
-              Connect with me on GitHub and LinkedIn for updates and collaboration opportunities in the FOSS community.
-            </p>
-            <div style="display: flex; justify-content: center; gap: 20px;">
-              <a href="https://github.com/iitzIrFan" style="display: flex; align-items: center; gap: 8px; color: var(--orange-yellow-crayola);">
-                <ion-icon name="logo-github"></ion-icon>
-                GitHub
-              </a>
-              <a href="https://www.linkedin.com/in/irfan-shaikh-8b5b94259/" style="display: flex; align-items: center; gap: 8px; color: var(--orange-yellow-crayola);">
-                <ion-icon name="logo-linkedin"></ion-icon>
-                LinkedIn
-              </a>
+
+          <!-- Organization Dropdowns -->
+          <div class="org-dropdowns">
+
+            <!-- Kestra.io -->
+            <div class="org-dropdown" data-org="kestra-io">
+              <button class="org-dropdown-header" type="button">
+                <div class="org-info">
+                  <ion-icon name="business-outline"></ion-icon>
+                  <h3 class="h4 org-name">kestra-io</h3>
+                </div>
+                <ion-icon name="chevron-down-outline" class="dropdown-icon"></ion-icon>
+              </button>
+              <div class="org-dropdown-content">
+                <div class="loading-spinner" style="display: none;">
+                  <ion-icon name="reload-outline"></ion-icon>
+                  <p>Loading contributions...</p>
+                </div>
+                <div class="org-issues-container"></div>
+              </div>
             </div>
+
+            <!-- QwikDev -->
+            <div class="org-dropdown" data-org="QwikDev">
+              <button class="org-dropdown-header" type="button">
+                <div class="org-info">
+                  <ion-icon name="business-outline"></ion-icon>
+                  <h3 class="h4 org-name">QwikDev</h3>
+                </div>
+                <ion-icon name="chevron-down-outline" class="dropdown-icon"></ion-icon>
+              </button>
+              <div class="org-dropdown-content">
+                <div class="loading-spinner" style="display: none;">
+                  <ion-icon name="reload-outline"></ion-icon>
+                  <p>Loading contributions...</p>
+                </div>
+                <div class="org-issues-container"></div>
+              </div>
+            </div>
+
+            <!-- recodehive -->
+            <div class="org-dropdown" data-org="recodehive">
+              <button class="org-dropdown-header" type="button">
+                <div class="org-info">
+                  <ion-icon name="business-outline"></ion-icon>
+                  <h3 class="h4 org-name">recodehive</h3>
+                </div>
+                <ion-icon name="chevron-down-outline" class="dropdown-icon"></ion-icon>
+              </button>
+              <div class="org-dropdown-content">
+                <div class="loading-spinner" style="display: none;">
+                  <ion-icon name="reload-outline"></ion-icon>
+                  <p>Loading contributions...</p>
+                </div>
+                <div class="org-issues-container"></div>
+              </div>
+            </div>
+
           </div>
+
+          <!-- Error Message Template (hidden by default) -->
+          <div class="error-message" style="display: none;">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <p>Unable to fetch contributions. Please try again later.</p>
+          </div>
+
         </section>
       </article>
 
