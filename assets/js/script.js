@@ -401,19 +401,13 @@ const fetchOrgIssues = async (org, username, token) => {
   try {
     // Fetch issues where user commented
     const commentedResponse = await fetch(
-      `https://api.github.com/search/issues?q=org:${org}+commenter:${username}&sort=updated&per_page=30`,
+      `https://api.github.com/search/issues?q=org:${org}+commenter:${username}+is:issue&per_page=100`,
       { headers }
     );
     
     // Fetch issues assigned to user
     const assignedResponse = await fetch(
-      `https://api.github.com/search/issues?q=org:${org}+assignee:${username}&sort=updated&per_page=30`,
-      { headers }
-    );
-    
-    // Fetch issues created by user that are now closed
-    const closedResponse = await fetch(
-      `https://api.github.com/search/issues?q=org:${org}+author:${username}+is:closed&sort=updated&per_page=30`,
+      `https://api.github.com/search/issues?q=org:${org}+assignee:${username}+is:issue&per_page=100`,
       { headers }
     );
     
@@ -423,18 +417,16 @@ const fetchOrgIssues = async (org, username, token) => {
       console.log(`GitHub API Rate Limit Remaining: ${rateLimitRemaining}`);
     }
     
-    if (!commentedResponse.ok || !assignedResponse.ok || !closedResponse.ok) {
+    if (!commentedResponse.ok || !assignedResponse.ok) {
       throw new Error('Failed to fetch issues from GitHub API');
     }
     
     const commentedData = await commentedResponse.json();
     const assignedData = await assignedResponse.json();
-    const closedData = await closedResponse.json();
     
     return {
       commented: commentedData.items || [],
       assigned: assignedData.items || [],
-      closed: closedData.items || [],
       rateLimitRemaining
     };
   } catch (error) {
@@ -462,7 +454,7 @@ const fetchAndDisplayOrgIssues = async (dropdown, org) => {
     spinner.style.display = 'none';
     
     // Display the issues
-    displayOrgIssues(container, data.commented, data.assigned, data.closed);
+    displayOrgIssues(container, data.commented, data.assigned);
     
   } catch (error) {
     spinner.style.display = 'none';
@@ -476,17 +468,23 @@ const fetchAndDisplayOrgIssues = async (dropdown, org) => {
 };
 
 // Display organization issues
-const displayOrgIssues = (container, commentedIssues, assignedIssues, closedIssues) => {
+const displayOrgIssues = (container, commentedIssues, assignedIssues) => {
   let html = '<div class="issues-grid">';
   
   // Commented Issues Section
   html += `
-    <div class="issue-section">
-      <h4 class="issue-section-title">
-        <ion-icon name="chatbox-outline"></ion-icon>
-        <span>Commented On</span>
-        <span class="issue-count">(${commentedIssues.length})</span>
-      </h4>
+    <div class="issue-section" data-section="commented">
+      <button class="issue-section-header" type="button">
+        <div class="issue-section-header-content">
+          <div class="issue-section-title">
+            <ion-icon name="chatbox-outline"></ion-icon>
+            <span>Commented On</span>
+          </div>
+          <span class="issue-count">${commentedIssues.length}</span>
+        </div>
+        <ion-icon name="chevron-down-outline" class="issue-section-dropdown-icon"></ion-icon>
+      </button>
+      <div class="issue-section-content">
   `;
   
   if (commentedIssues.length > 0) {
@@ -504,16 +502,22 @@ const displayOrgIssues = (container, commentedIssues, assignedIssues, closedIssu
     `;
   }
   
-  html += `</div>`;
+  html += `</div></div>`;
   
   // Assigned Issues Section
   html += `
-    <div class="issue-section">
-      <h4 class="issue-section-title">
-        <ion-icon name="person-outline"></ion-icon>
-        <span>Assigned to Me</span>
-        <span class="issue-count">(${assignedIssues.length})</span>
-      </h4>
+    <div class="issue-section" data-section="assigned">
+      <button class="issue-section-header" type="button">
+        <div class="issue-section-header-content">
+          <div class="issue-section-title">
+            <ion-icon name="person-outline"></ion-icon>
+            <span>Assigned to Me</span>
+          </div>
+          <span class="issue-count">${assignedIssues.length}</span>
+        </div>
+        <ion-icon name="chevron-down-outline" class="issue-section-dropdown-icon"></ion-icon>
+      </button>
+      <div class="issue-section-content">
   `;
   
   if (assignedIssues.length > 0) {
@@ -531,36 +535,18 @@ const displayOrgIssues = (container, commentedIssues, assignedIssues, closedIssu
     `;
   }
   
-  html += `</div>`;
-  
-  // Closed Issues Section
-  html += `
-    <div class="issue-section">
-      <h4 class="issue-section-title">
-        <ion-icon name="checkmark-circle-outline"></ion-icon>
-        <span>Closed by Me</span>
-        <span class="issue-count">(${closedIssues.length})</span>
-      </h4>
-  `;
-  
-  if (closedIssues.length > 0) {
-    html += `
-      <div class="issue-list">
-        ${closedIssues.map(issue => createIssueHTML(issue)).join('')}
-      </div>
-    `;
-  } else {
-    html += `
-      <div class="empty-state">
-        <ion-icon name="document-outline"></ion-icon>
-        <p>No closed issues</p>
-      </div>
-    `;
-  }
-  
-  html += `</div></div>`;
+  html += `</div></div></div>`;
   
   container.innerHTML = html;
+  
+  // Add click handlers for nested dropdowns
+  const sectionHeaders = container.querySelectorAll('.issue-section-header');
+  sectionHeaders.forEach(header => {
+    header.addEventListener('click', function() {
+      const section = this.closest('.issue-section');
+      section.classList.toggle('active');
+    });
+  });
 };
 
 // Create HTML for a single issue
