@@ -362,6 +362,28 @@ const orgDataCache = {};
 const initProofOfWork = () => {
   const orgDropdowns = document.querySelectorAll('.org-dropdown');
   
+  // Fetch totals when Proof of Work section is opened
+  const proofOfWorkPage = document.querySelector('[data-page="proof-of-work"]');
+  if (proofOfWorkPage) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          if (proofOfWorkPage.classList.contains('active')) {
+            // Load all organization data for statistics
+            fetchAllOrganizationData();
+          }
+        }
+      });
+    });
+    
+    observer.observe(proofOfWorkPage, { attributes: true });
+    
+    // If already active, fetch data immediately
+    if (proofOfWorkPage.classList.contains('active')) {
+      fetchAllOrganizationData();
+    }
+  }
+  
   orgDropdowns.forEach(dropdown => {
     const header = dropdown.querySelector('.org-dropdown-header');
     const org = dropdown.getAttribute('data-org');
@@ -379,12 +401,44 @@ const initProofOfWork = () => {
       // Toggle current dropdown
       dropdown.classList.toggle('active');
       
-      // Fetch data only if opening and not cached
-      if (!isActive && !orgDataCache[org]) {
-        await fetchAndDisplayOrgIssues(dropdown, org);
+      // Display data if opening
+      if (!isActive) {
+        const container = dropdown.querySelector('.org-issues-container');
+        
+        // If data is cached, display it
+        if (orgDataCache[org]) {
+          if (container.innerHTML === '') {
+            displayOrgIssues(container, orgDataCache[org].commented, orgDataCache[org].assigned);
+          }
+        } else {
+          // Otherwise fetch it
+          await fetchAndDisplayOrgIssues(dropdown, org);
+        }
       }
     });
   });
+};
+
+// Fetch data from all organizations for statistics
+const fetchAllOrganizationData = async () => {
+  const organizations = GITHUB_CONFIG.orgs;
+  
+  // Fetch data from all organizations
+  const promises = organizations.map(async (org) => {
+    if (!orgDataCache[org]) {
+      try {
+        const data = await fetchOrgIssues(org, GITHUB_CONFIG.username, GITHUB_CONFIG.token);
+        orgDataCache[org] = data;
+      } catch (error) {
+        console.error(`Error fetching data for ${org}:`, error);
+      }
+    }
+  });
+  
+  await Promise.all(promises);
+  
+  // Update statistics after all data is fetched
+  updateProofOfWorkStats();
 };
 
 // Fetch issues from GitHub API
@@ -456,6 +510,9 @@ const fetchAndDisplayOrgIssues = async (dropdown, org) => {
     // Display the issues
     displayOrgIssues(container, data.commented, data.assigned);
     
+    // Update statistics
+    updateProofOfWorkStats();
+    
   } catch (error) {
     spinner.style.display = 'none';
     container.innerHTML = `
@@ -465,6 +522,43 @@ const fetchAndDisplayOrgIssues = async (dropdown, org) => {
       </div>
     `;
   }
+};
+
+// Update proof of work statistics
+const updateProofOfWorkStats = () => {
+  let totalCommented = 0;
+  let totalAssigned = 0;
+  
+  // Sum up all cached data
+  Object.values(orgDataCache).forEach(data => {
+    totalCommented += (data.commented || []).length;
+    totalAssigned += (data.assigned || []).length;
+  });
+  
+  // Update the UI with animation
+  const commentedEl = document.querySelector('[data-stat="commented"]');
+  const assignedEl = document.querySelector('[data-stat="assigned"]');
+  
+  if (commentedEl) animateNumber(commentedEl, totalCommented);
+  if (assignedEl) animateNumber(assignedEl, totalAssigned);
+};
+
+// Animate number counting
+const animateNumber = (element, target) => {
+  const duration = 1000;
+  const start = parseInt(element.textContent) || 0;
+  const increment = (target - start) / (duration / 16);
+  let current = start;
+  
+  const timer = setInterval(() => {
+    current += increment;
+    if ((increment > 0 && current >= target) || (increment < 0 && current <= target)) {
+      element.textContent = target;
+      clearInterval(timer);
+    } else {
+      element.textContent = Math.round(current);
+    }
+  }, 16);
 };
 
 // Display organization issues
