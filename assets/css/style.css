@@ -2449,9 +2449,23 @@ textarea.form-input::-webkit-resizer { display: none; }
   transition: all 0.3s ease;
 }
 
+.org-info .org-logo {
+  height: 32px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px hsla(45, 100%, 72%, 0.3));
+  transition: all 0.3s ease;
+}
+
 .org-dropdown-header:hover .org-info ion-icon {
   transform: scale(1.15) rotate(5deg);
   filter: drop-shadow(0 0 12px hsla(45, 100%, 72%, 0.8));
+}
+
+.org-dropdown-header:hover .org-info .org-logo {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 12px hsla(45, 100%, 72%, 0.5));
 }
 
 .org-name {

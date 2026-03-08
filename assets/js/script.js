@@ -351,7 +351,7 @@ window.addEventListener('hashchange', () => {
 // GitHub API Configuration
 const GITHUB_CONFIG = {
   username: 'iitzIrFan',
-  token: 'YOUR_GITHUB_TOKEN_HERE', // Replace with your GitHub Personal Access Token
+  token: '', // Leaving this as empty for unauthenticated requests (60/hour limit) for now as per "Portfolio's scale"
   orgs: ['kestra-io', 'QwikDev', 'recodehive']
 };
 
