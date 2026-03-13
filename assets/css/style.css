@@ -3163,3 +3163,71 @@ textarea.form-input::-webkit-resizer { display: none; }
     font-size: var(--fs-5);
   }
 }
+
+
+/* Mobile-specific tweaks for Proof of Work (improve narrow-screen layout) */
+@media (max-width: 579px) {
+  .proof-of-work .article-title {
+    font-size: 20px;
+    margin-bottom: 18px;
+    letter-spacing: 0.25px;
+  }
+
+  .proof-of-work-content {
+    padding: 14px;
+    border-radius: 12px;
+  }
+
+  .pow-intro-text {
+    padding: 12px;
+    font-size: var(--fs-6);
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .pow-intro-text ion-icon {
+    font-size: 24px;
+  }
+
+  .pow-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .stat-card > ion-icon {
+    font-size: 32px;
+  }
+
+  .stat-number {
+    font-size: 20px;
+  }
+
+  .org-dropdowns { gap: 16px; }
+
+  .org-dropdown-header { padding: 12px 14px; }
+
+  .org-info .org-logo { max-width: 90px; }
+  .org-name { font-size: var(--fs-4); }
+
+  .issue-section { padding: 10px; }
+  .issue-section-header { padding: 12px 14px; }
+  .issue-section-title { font-size: var(--fs-4); }
+
+  .issue-count {
+    padding: 6px 12px;
+    font-size: var(--fs-8);
+    min-width: auto;
+  }
+
+  .issues-grid { gap: 12px; }
+  .issue-item { padding: 12px; }
+}
