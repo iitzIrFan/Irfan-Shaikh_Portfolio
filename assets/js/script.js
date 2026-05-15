@@ -46,6 +46,27 @@ for (let i = 0; i < testimonialsItem.length; i++) {
 modalCloseBtn.addEventListener("click", testimonialsModalFunc);
 overlay.addEventListener("click", testimonialsModalFunc);
 
+// horizontal scroll buttons functionality
+const scrollBtns = document.querySelectorAll("[data-scroll-btn]");
+
+scrollBtns.forEach(btn => {
+  btn.addEventListener("click", function () {
+    const sectionName = this.dataset.scrollBtn;
+    const scrollContainer = document.querySelector(`.${sectionName}-list`);
+    
+    if (scrollContainer) {
+      // Calculate scroll amount based on visible width (about one card)
+      const scrollAmount = scrollContainer.clientWidth > 400 ? 300 : scrollContainer.clientWidth * 0.8; 
+      
+      if (this.classList.contains("prev")) {
+        scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      } else if (this.classList.contains("next")) {
+        scrollContainer.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      }
+    }
+  });
+});
+
 
 
 // Portfolio filter functionality has been simplified
@@ -88,27 +109,7 @@ for (let i = 0; i < formInputs.length; i++) {
 
 
 // page navigation variables
-const navigationLinks = document.querySelectorAll("[data-nav-link]");
-const pages = document.querySelectorAll("[data-page]");
-
-// add event to all nav link
-for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
-
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
-      }
-    }
-
-  });
-}
-
+// Redundant navigation logic removed to prevent scroll jumping and conflicts with hash routing
 
 // Function to display error/maintenance message
 function displayErrorMessage() {
@@ -333,4 +334,18 @@ window.addEventListener('DOMContentLoaded', () => {
 // Handle hash changes (navigation)
 window.addEventListener('hashchange', () => {
   showSection(window.location.hash);
+});
+
+// Prevent native anchor jumping which causes UI movement/glitches
+navLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const hash = this.getAttribute('href');
+    if (window.location.hash !== hash && (window.location.hash !== '' || hash !== '#about')) {
+      history.pushState(null, null, hash);
+      showSection(hash);
+      // Smoothly scroll to the top of the container if needed, or simply don't scroll
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
 });

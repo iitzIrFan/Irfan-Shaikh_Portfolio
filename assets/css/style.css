@@ -159,6 +159,7 @@ textarea {
 
 html {
   font-family: var(--ff-poppins);
+  overflow-y: scroll; /* Forces scrollbar to always show, preventing layout shift on tab changes */
 }
 
 body {
@@ -401,11 +402,12 @@ main {
   font-size: var(--fs-8);
   font-weight: var(--fw-400);
   width: max-content;
-  padding: 6px 14px;
+  padding: 5px 13px;
   border-radius: 20px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  border: 1px solid transparent;
   transition: var(--transition-1);
   box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.2);
 }
@@ -561,8 +563,52 @@ main {
   margin-bottom: 30px;
 }
 
-.testimonials-title {
+.testimonials-title,
+.clients-title {
   margin-bottom: 20px;
+}
+
+.carousel-container {
+  position: relative;
+  padding: 0 40px; /* Space for buttons beside the list */
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--onyx);
+  color: var(--white-1);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: var(--transition-1);
+  box-shadow: var(--shadow-1);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.scroll-btn.prev {
+  left: 0;
+}
+
+.scroll-btn.next {
+  right: 0;
+}
+
+.scroll-btn:hover {
+  background: var(--jet);
+  color: var(--orange-yellow-crayola);
+  transform: translateY(-50%) scale(1.05);
+  box-shadow: 0 4px 8px hsla(0, 0%, 0%, 0.3);
+}
+
+.scroll-btn ion-icon {
+  --ionicon-stroke-width: 50px;
 }
 
 .testimonials-list {
@@ -570,9 +616,8 @@ main {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 15px;
-  margin: 0 -15px;
-  padding: 25px 15px;
-  padding-bottom: 35px;
+  margin: 0;
+  padding: 25px 0 35px 0;
   overflow-x: auto;
   scroll-behavior: smooth;
   overscroll-behavior-inline: contain;
@@ -747,14 +792,12 @@ main {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 15px;
-  margin: 0 -15px;
-  padding: 25px;
-  padding-bottom: 25px;
+  margin: 0;
+  padding: 25px 0;
   overflow-x: auto;
   scroll-behavior: smooth;
   overscroll-behavior-inline: contain;
   scroll-snap-type: inline mandatory;
-  scroll-padding-inline: 25px;
 }
 
 .clients-item {
