@@ -159,7 +159,8 @@ textarea {
 
 html {
   font-family: var(--ff-poppins);
-  overflow-y: scroll; /* Forces scrollbar to always show, preventing layout shift on tab changes */
+  overflow-y: scroll;
+  /* Forces scrollbar to always show, preventing layout shift on tab changes */
 }
 
 body {
@@ -570,7 +571,8 @@ main {
 
 .carousel-container {
   position: relative;
-  padding: 0 40px; /* Space for buttons beside the list */
+  padding: 0 40px;
+  /* Space for buttons beside the list */
 }
 
 .scroll-btn {
