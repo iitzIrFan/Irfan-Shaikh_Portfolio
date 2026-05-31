@@ -53,11 +53,11 @@ scrollBtns.forEach(btn => {
   btn.addEventListener("click", function () {
     const sectionName = this.dataset.scrollBtn;
     const scrollContainer = document.querySelector(`.${sectionName}-list`);
-    
+
     if (scrollContainer) {
       // Calculate scroll amount based on visible width (about one card)
-      const scrollAmount = scrollContainer.clientWidth > 400 ? 300 : scrollContainer.clientWidth * 0.8; 
-      
+      const scrollAmount = scrollContainer.clientWidth > 400 ? 300 : scrollContainer.clientWidth * 0.8;
+
       if (this.classList.contains("prev")) {
         scrollContainer.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
       } else if (this.classList.contains("next")) {
@@ -77,7 +77,7 @@ const filterBtn = document.querySelectorAll("[data-filter-btn]");
 const filterItems = document.querySelectorAll("[data-filter-item]");
 
 // Show all portfolio items by default
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function () {
   for (let i = 0; i < filterItems.length; i++) {
     filterItems[i].classList.add("active");
   }
@@ -114,7 +114,7 @@ for (let i = 0; i < formInputs.length; i++) {
 // Function to display error/maintenance message
 function displayErrorMessage() {
   const projectList = document.querySelector('.project-list');
-  
+
   // Check if error message already exists
   const existingError = document.querySelector('.status-message');
   if (existingError) {
@@ -126,11 +126,11 @@ function displayErrorMessage() {
     }
     return; // Don't recreate the error message
   }
-  
+
   // Check if projects exist and animate them out
   const existingProjects = document.querySelectorAll('.project-item');
   const existingHeading = document.querySelector('.h5.article-title');
-  
+
   if (existingProjects.length > 0 || existingHeading) {
     // Fade out existing projects
     existingProjects.forEach((project, index) => {
@@ -139,7 +139,7 @@ function displayErrorMessage() {
     if (existingHeading) {
       existingHeading.style.animation = 'fadeOut 0.3s ease forwards';
     }
-    
+
     // Wait for fade out to complete, then show error
     setTimeout(() => {
       if (existingHeading) existingHeading.remove();
@@ -150,7 +150,7 @@ function displayErrorMessage() {
     projectList.innerHTML = '';
     showErrorCard();
   }
-  
+
   function showErrorCard() {
     const errorCard = `
       <div class="status-message" style="opacity: 0; animation: slideInUp 0.5s ease forwards;">
@@ -173,7 +173,7 @@ function displayErrorMessage() {
     `;
 
     projectList.insertAdjacentHTML('beforeend', errorCard);
-    
+
     // Attach event listener after button is created
     const retryBtn = projectList.querySelector('.retry-btn');
     if (retryBtn) {
@@ -191,7 +191,7 @@ function handleRetryClick() {
   if (isFetchingRepos) {
     return;
   }
-  
+
   const retryBtn = document.querySelector('.retry-btn');
   if (retryBtn) {
     retryBtn.disabled = true;
@@ -208,9 +208,9 @@ async function fetchPinnedRepos() {
   if (isFetchingRepos) {
     return;
   }
-  
+
   isFetchingRepos = true;
-  
+
   try {
     const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
     if (!response.ok) {
@@ -229,7 +229,7 @@ async function fetchPinnedRepos() {
 
 function displayRepos(repos) {
   const projectList = document.querySelector('.project-list');
-  
+
   // Check if error message exists and animate it out
   const errorMessage = document.querySelector('.status-message');
   if (errorMessage) {
@@ -294,22 +294,22 @@ const aboutLink = document.querySelector('.navbar-link[href="#about"]');
 function showSection(hash) {
   // Remove the # if it exists
   const sectionId = hash.startsWith('#') ? hash.substring(1) : hash;
-  
+
   // Handle the About section specifically
   if (!sectionId || sectionId === 'about') {
     // Show only the About section
     sections.forEach(section => {
       section.classList.toggle('active', section.classList.contains('about'));
     });
-    
+
     // Make only About link active
     navLinks.forEach(link => {
       link.classList.toggle('active', link === aboutLink);
     });
-    
+
     return;
   }
-  
+
   // For other sections, hide all and show only the selected section
   sections.forEach(section => {
     section.classList.toggle('active', section.id === sectionId);
@@ -338,7 +338,7 @@ window.addEventListener('hashchange', () => {
 
 // Prevent native anchor jumping which causes UI movement/glitches
 navLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
+  link.addEventListener('click', function (e) {
     e.preventDefault();
     const hash = this.getAttribute('href');
     if (window.location.hash !== hash && (window.location.hash !== '' || hash !== '#about')) {
