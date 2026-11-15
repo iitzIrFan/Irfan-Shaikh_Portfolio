@@ -1046,6 +1046,8 @@ main {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 15px;
+  /* shows a card shape while the image loads, and behind transparent images */
+  background: var(--bg-gradient-onyx);
 }
 
 .project-img::before {
@@ -1496,6 +1498,11 @@ textarea.form-input::-webkit-resizer {
   .project-img,
   .blog-banner-box {
     height: auto;
+  }
+
+  /* same shape for every card, whatever the image's own ratio */
+  .project-img {
+    aspect-ratio: 1200 / 630;
   }
 
   /**
