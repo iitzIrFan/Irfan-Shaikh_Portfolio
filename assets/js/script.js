@@ -201,6 +201,9 @@ function handleRetryClick() {
 }
 
 // Function to fetch and display pinned repositories
+const PINNED_API_URL = 'https://octo-pinned-api.onrender.com/api/pinned';
+const DEFAULT_PROJECT_IMAGE = './assets/images/projects/default.svg';
+
 window.addEventListener('load', fetchPinnedRepos);
 
 async function fetchPinnedRepos() {
@@ -212,11 +215,14 @@ async function fetchPinnedRepos() {
   isFetchingRepos = true;
 
   try {
-    const response = await fetch('https://octo-pinned-api.onrender.com/api/pinned');
+    const response = await fetch(PINNED_API_URL);
     if (!response.ok) {
       throw new Error(`API responded with status: ${response.status}`);
     }
     const repos = await response.json();
+    if (!Array.isArray(repos)) {
+      throw new Error('API returned an unexpected response');
+    }
     displayRepos(repos);
   } catch (error) {
     console.error('Error fetching pinned repositories:', error);
@@ -252,13 +258,11 @@ function displayRepos(repos) {
     projectList.insertAdjacentElement('beforebegin', heading);
 
     repos.forEach((repo, index) => {
-      const { name, description, url, stargazerCount, forkCount, languages, homepageUrl } = repo;
+      const { name, description, url, stargazerCount, forkCount, languages, homepageUrl, image } = repo;
       const language = languages?.nodes?.[0]?.name || "Unknown";
 
-      // Use OpenGraph image from live link if available, otherwise use repo-based thumbnail
-      const repoThumbnail = homepageUrl
-        ? `https://api.microlink.io/?url=${encodeURIComponent(homepageUrl)}&screenshot=true&meta=false&embed=screenshot.url`
-        : `https://og-image.vercel.app/${encodeURIComponent(name)}.png`;
+      // Preview image is resolved by the API; fall back to a local placeholder
+      const repoThumbnail = image || DEFAULT_PROJECT_IMAGE;
 
       const projectItem = `
         <li class="project-item active" data-filter-item data-category="github" style="opacity: 0; animation: slideInUp 0.5s ease forwards ${index * 0.1}s;">
@@ -267,7 +271,8 @@ function displayRepos(repos) {
               <div class="project-item-icon-box">
                 <ion-icon name="eye-outline"></ion-icon>
               </div>
-              <img src="${repoThumbnail}" alt="${name}" loading="lazy">
+              <img src="${repoThumbnail}" alt="${name}" loading="lazy"
+                onerror="this.onerror=null; this.src='${DEFAULT_PROJECT_IMAGE}';">
             </figure>
 
             <h3 class="project-title">${name}</h3>
