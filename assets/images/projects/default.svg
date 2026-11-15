@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="Project preview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#383838"/>
+      <stop offset="1" stop-color="#1e1e1f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffdb70" stroke-width="22" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M520 235 L445 315 L520 395"/>
+    <path d="M680 235 L755 315 L680 395"/>
+    <path d="M630 215 L570 415"/>
+  </g>
+  <text x="600" y="495" text-anchor="middle" fill="#d6d6d6" font-family="Poppins, Arial, sans-serif" font-size="38" font-weight="500">Project preview</text>
+</svg>
